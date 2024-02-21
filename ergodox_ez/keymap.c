@@ -1,5 +1,6 @@
 #include QMK_KEYBOARD_H
 #include "version.h"
+#include "private.h"
 
 #define BASE 0 // default layer
 #define SYMB 1 // symbols
@@ -27,6 +28,8 @@ enum custom_keycodes {
   MY_CDBL, // ```~``` : code block with copied
   MY_BKBL, // `~` : back quote block with copied
   MY_DBSL, // // : double slash
+
+  MYS_ID, MYS_1P, MYS_MM
 };
 
 #define MC_KANA KC_LNG1           // Mac KANA
@@ -138,7 +141,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
  * |        |      | Home | PgUp |PgDown| End  |------|           |------| Left | Down | Up   | Right|   :  |   "    |
  * |--------+------+------+------+------+------|      |           |      |------+------+------+------+------+--------|
- * |        |      |      |      |      |      |      |           |      |      |      |      |      |      |        |
+ * |        |      |      |      |      |      |STR_MM|           |STR_1P|      |      |      |      |      |        |
  * `--------+------+------+------+------+-------------'           `-------------+------+------+------+------+--------'
  *   |      |      |      |      |      |                                       |      |      |      |      |      |
  *   `----------------------------------'                                       `----------------------------------'
@@ -155,7 +158,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,      KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_1,       KC_2,       KC_3,       KC_4,       KC_5,       KC_TRNS,
     KC_TRNS,    KC_TRNS,    KC_HOME,    KC_PGUP,    KC_PGDN,    KC_END,
-    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_BTN1,    KC_BTN2,    KC_TRNS,    KC_TRNS,
+    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_BTN1,    KC_BTN2,    KC_TRNS,    MYS_MM,
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                                                                                     // guide
                                                                 KC_TRNS,    KC_TRNS,
@@ -165,7 +168,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
     KC_TRNS,    KC_6,       KC_7,       KC_8,       KC_9,       KC_0,       KC_PIPE,
                 KC_LEFT,    KC_DOWN,    KC_UP,      KC_RGHT,    KC_COLN,    KC_DQUO,
-    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
+    MYS_1P,     KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                             KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,    KC_TRNS,
                                                                                     // guide
     KC_TRNS,    KC_TRNS,
@@ -217,6 +220,12 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
         return false;
       case MY_DBSL:
         SEND_STRING ("//");
+        return false;
+      case MYS_1P:
+        send_string(MY_STR_1P);
+        return false;
+      case MYS_MM:
+        send_string(MY_STR_MM);
         return false;
     }
   }
